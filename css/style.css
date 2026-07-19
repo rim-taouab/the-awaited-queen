@@ -481,6 +481,34 @@ html, body {
 .light-node .lf-spin { transform-box: fill-box; transform-origin: center; animation: lightspin 22s linear infinite; }
 @keyframes lightspin { to { transform: rotate(360deg); } }
 
+/* little message-fairies — clearly visible, wings fluttering, softly beckoning */
+.fairy-node { filter: drop-shadow(0 0 18px rgba(255, 250, 220, 0.7)); }
+.fairy-node svg { width: 72px; height: 72px; }
+.fairy-node .fairy-wings {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flutter .4s ease-in-out infinite alternate;
+}
+@keyframes flutter { from { transform: scaleX(.66); } to { transform: scaleX(1.06); } }
+.fairy-node:hover { transform: translate(-50%, -50%) scale(1.3); filter: drop-shadow(0 0 30px rgba(255, 252, 230, 0.95)); }
+/* a gentle beckoning halo so the eye is drawn to them */
+.fairy-node::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: 44%;
+  width: 74px; height: 74px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  box-shadow: 0 0 0 1px rgba(255, 248, 214, 0.25);
+  animation: beckon 3.2s ease-out infinite;
+}
+@keyframes beckon {
+  0%   { opacity: .6; transform: translate(-50%, -50%) scale(.5); }
+  70%  { opacity: 0;  transform: translate(-50%, -50%) scale(1.5); }
+  100% { opacity: 0;  transform: translate(-50%, -50%) scale(1.5); }
+}
+
 /* revealed whisper / tale / letter card */
 .card {
   position: fixed;

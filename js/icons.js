@@ -239,7 +239,39 @@ const Icons = (() => {
       <circle cx="27" cy="27" r="1.4" fill="#ffffff" opacity=".9"/>`);
   }
 
-  return { get, light, ART };
+  // ---- Little fairies that hold the hidden messages ---------------------
+  //  Clearly a winged sprite carrying a glowing light — flutters & pulses so
+  //  it's obvious where the whispers are. Tinted per place.
+  let _fid = 0;
+  function fairy(tint, variant = 0) {
+    const id = "F" + (_fid++);
+    const halo = `<radialGradient id="${id}h" cx="50%" cy="46%" r="55%">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".92"/>
+        <stop offset="30%" stop-color="${tint}" stop-opacity=".5"/>
+        <stop offset="100%" stop-color="${tint}" stop-opacity="0"/></radialGradient>`;
+    const bodyG = `<radialGradient id="${id}b" cx="50%" cy="32%" r="75%">
+        <stop offset="0" stop-color="#fffdf3"/>
+        <stop offset="100%" stop-color="${tint}" stop-opacity=".9"/></radialGradient>`;
+    const wingG = `<radialGradient id="${id}w" cx="50%" cy="50%" r="62%">
+        <stop offset="0" stop-color="#ffffff" stop-opacity=".72"/>
+        <stop offset="100%" stop-color="${tint}" stop-opacity=".16"/></radialGradient>`;
+    return S(`<defs>${halo}${bodyG}${wingG}</defs>
+      <circle cx="32" cy="31" r="28" fill="url(#${id}h)"/>
+      <g class="fairy-wings" stroke="${tint}" stroke-width="1" fill="url(#${id}w)">
+        <ellipse cx="20" cy="22" rx="12" ry="17" transform="rotate(-24 20 22)"/>
+        <ellipse cx="44" cy="22" rx="12" ry="17" transform="rotate(24 44 22)"/>
+        <ellipse cx="22" cy="38" rx="8.5" ry="12" transform="rotate(-14 22 38)"/>
+        <ellipse cx="42" cy="38" rx="8.5" ry="12" transform="rotate(14 42 38)"/>
+      </g>
+      <circle cx="32" cy="19" r="4.4" fill="url(#${id}b)"/>
+      <path d="M32 22 C26.5 28 24.5 39 32 47 C39.5 39 37.5 28 32 22 Z" fill="url(#${id}b)"/>
+      <circle cx="32" cy="45" r="6.5" fill="${tint}" opacity=".55"/>
+      <circle cx="32" cy="45" r="3.6" fill="#ffffff"/>
+      <circle cx="25" cy="15" r="1.3" fill="#fff" opacity=".9"/>
+      <circle cx="41" cy="17" r="1.05" fill="#fff" opacity=".8"/>`);
+  }
+
+  return { get, light, fairy, ART };
 })();
 
 window.Icons = Icons;

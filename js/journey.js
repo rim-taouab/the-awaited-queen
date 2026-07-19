@@ -145,7 +145,7 @@ const Journey = (() => {
       // scatter nodes in a loose grid to avoid overlap
       const cols = Math.ceil(Math.sqrt(items.length));
       items.forEach((item, i) => {
-        const node = el("div", "node light-node", Icons.light(tint, i % 3));
+        const node = el("div", "node fairy-node", Icons.fairy(tint, i % 3));
         const col = i % cols, row = Math.floor(i / cols);
         const cx = ((col + 0.5) / cols) * 100 + (Math.sin(i * 2.3) * 6);
         const cy = ((row + 0.5) / Math.ceil(items.length / cols)) * 100 + (Math.cos(i * 1.7) * 6);
