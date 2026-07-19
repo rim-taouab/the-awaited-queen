@@ -158,7 +158,7 @@ const QUEEN = {
   // ---- The closing message (used if no finaleVideo is set) ----------------
   closing: [
     "Happy Birthday, my Fairy Queen.",
-    "The realm will keep its light on now. It knows you will come back.",
+    "Your kingdom will keep its light on now. It knows you will come back.",
     "And whatever the years bring, remember this —",
     "I love you, bestie fairy. 💛",
   ],
