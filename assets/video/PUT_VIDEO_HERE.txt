@@ -1,0 +1,3 @@
+Put your heartfelt closing video here (e.g. message.mp4), then set in js/config.js:
+    finaleVideo: "assets/video/message.mp4",
+Leave config.js finaleVideo as "" to use the built-in animated closing message.

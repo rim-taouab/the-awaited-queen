@@ -1,0 +1,16 @@
+=== Version chantée de "Once Upon a Dream" ===
+
+1. Mets ton fichier audio ICI, nommé EXACTEMENT :
+       once-upon-a-dream.mp3
+
+   (c'est déjà le nom attendu dans js/config.js -> music)
+
+2. Ouvre index.html, clique "Enter the realm" : la chanson se lance.
+
+Formats acceptés : .mp3, .m4a, .ogg, .wav
+  -> si tu utilises un autre nom/format, mets-le dans js/config.js :
+       music: "assets/music/ton-fichier.m4a",
+
+Si le fichier est absent ou illisible, la boîte à musique (valse de
+Tchaïkovski, la mélodie d'Once Upon a Dream) se joue automatiquement
+à la place — donc jamais de silence.

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>The Forgotten Queen</title>
+  <meta name="description" content="An enchanted realm that has waited a long time for her return." />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M8 46 L6 20 L20 30 L32 12 L44 30 L58 20 L56 46 Z' fill='%23f0cd77' stroke='%23a5762b' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M9 45 H55 L54 55 H10 Z' fill='%23f0cd77' stroke='%23a5762b' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E" />
+</head>
+<body>
+  <!-- layered atmosphere -->
+  <div id="backdrop"></div>
+  <div id="scenery-back"></div>
+  <canvas id="atmosphere"></canvas>
+  <div id="scenery-front"></div>
+  <div id="bloom"></div>
+  <div id="grade"></div>
+  <div id="grain"></div>
+  <div id="vignette"></div>
+  <div id="ornaments">
+    <span class="cnr tl"></span><span class="cnr tr"></span>
+    <span class="cnr bl"></span><span class="cnr br"></span>
+  </div>
+  <div id="letterbox"><div class="lb top"></div><div class="lb bottom"></div></div>
+  <div id="flash"></div>
+
+  <!-- the story stage -->
+  <div id="stage"></div>
+
+  <!-- finale surfaces -->
+  <div id="finale-video"></div>
+  <div id="closing"></div>
+
+  <!-- ambient controls -->
+  <div id="skip">let the story move ahead ›</div>
+  <div id="audio-toggle">♪ music</div>
+
+  <!-- custom cursor -->
+  <div id="cursor"></div>
+
+  <!-- begin screen -->
+  <div id="begin">
+    <div class="crest" id="crest"></div>
+    <h1>The Forgotten Queen</h1>
+    <div class="sub">A realm has been waiting for <span id="begin-name">you</span>.</div>
+    <button class="enter-btn" id="enter-btn">
+      Enter the realm
+      <span class="hint">best with sound · headphones invited</span>
+    </button>
+  </div>
+
+  <!-- scripts (classic, no build step — open index.html directly) -->
+  <script src="js/config.js"></script>
+  <script src="js/icons.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/atmosphere.js"></script>
+  <script src="js/backdrops.js"></script>
+  <script src="js/scenery.js"></script>
+  <script src="js/journey.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

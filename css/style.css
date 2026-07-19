@@ -1,0 +1,679 @@
+/* ============================================================================
+ *  THE FORGOTTEN QUEEN — styles
+ *  Illuminated-manuscript palette, soft glows, cinematic transitions.
+ * ==========================================================================*/
+
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital@0;1&family=Cinzel:wght@400;500&display=swap');
+
+:root {
+  --ink: #f4ecd8;
+  --ink-dim: #d9cbae;
+  --gold: #e8c979;
+  --gold-soft: #f5e2a8;
+  --rose: #f2b8d4;
+  --sky: #bcd6ff;
+  --violet: #cbb8ff;
+  --shadow: rgba(8, 10, 24, 0.6);
+  --serif: 'Cormorant Garamond', 'EB Garamond', Georgia, serif;
+  --display: 'Cinzel', serif;
+  --body: 'EB Garamond', Georgia, serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: #05060f;
+  color: var(--ink);
+  font-family: var(--body);
+  overflow: hidden;
+  cursor: auto; /* real hardware cursor — never lags or drifts */
+}
+
+/* custom cursor halo — disabled in favour of the accurate hardware cursor */
+#cursor { display: none; }
+#cursor.warm {
+  width: 42px; height: 42px;
+  background: radial-gradient(circle, rgba(245,226,168,.25), transparent 70%);
+  border-color: rgba(245, 226, 168, 0.9);
+}
+
+/* the living particle canvas */
+#atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ---- Scenery: layered painterly depth ----------------------------------- */
+#scenery-back { position: fixed; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
+#scenery-front { position: fixed; inset: 0; z-index: 4; pointer-events: none; overflow: hidden; }
+
+.scenery-layer {
+  position: absolute;
+  inset: -8%;
+  opacity: 0;
+  transition: opacity 3s ease;
+  will-change: transform, opacity;
+}
+.scenery-layer.visible { opacity: 1; }
+
+/* optional photographic backdrop */
+.photo-layer {
+  inset: -6%;
+  background-size: cover;
+  background-position: center;
+  filter: saturate(1.08) brightness(1.02) contrast(1.02);
+  animation: kenburns 40s ease-in-out infinite alternate;
+}
+.photo-grade {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 42%, transparent 45%, rgba(20,26,48,.28) 100%);
+  mix-blend-mode: multiply;
+  opacity: .7;
+}
+@keyframes kenburns {
+  0%   { transform: scale(1.06) translate(0, 0); }
+  100% { transform: scale(1.14) translate(-1.5%, -1%); }
+}
+
+/* foliage framing */
+.foliage-top {
+  inset: -8% -8% auto -8%;
+  height: 66%;
+  top: -6%;
+  background-repeat: no-repeat;
+  background-position: top center;
+  background-size: cover;
+  filter: drop-shadow(0 8px 30px rgba(0,0,0,.4)) blur(1.4px);
+}
+.foliage-front {
+  inset: auto -8% -8% -8%;
+  height: 72%;
+  bottom: -6%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  filter: drop-shadow(0 -6px 26px rgba(0,0,0,.35));
+}
+/* the great arching frame trees on the sides (enchanted tunnel) */
+.frame-trees {
+  inset: -8%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  filter: drop-shadow(0 6px 30px rgba(0,0,0,.4)) blur(0.6px);
+}
+
+/* volumetric god-rays */
+.god-rays { inset: -20% 0 auto 0; height: 130%; mix-blend-mode: screen; }
+.god-rays .ray {
+  position: absolute;
+  top: -20%;
+  height: 150%;
+  transform-origin: top center;
+  transform: skewX(-14deg);
+  filter: blur(9px);
+  animation: rayswing ease-in-out infinite alternate;
+}
+@keyframes rayswing {
+  0%   { opacity: .25; transform: skewX(-16deg) translateX(-8px); }
+  100% { opacity: .85; transform: skewX(-11deg) translateX(8px); }
+}
+
+.god-rays .dust {
+  position: absolute;
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,248,214,.9), transparent 70%);
+  animation: dustfloat linear infinite;
+}
+@keyframes dustfloat {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  15%  { opacity: .9; }
+  85%  { opacity: .7; }
+  100% { transform: translate(14px, 90px); opacity: 0; }
+}
+
+/* soft light-source bloom */
+.light-source { inset: -20% 0 auto 0; height: 90%; mix-blend-mode: screen; opacity: .0; }
+.light-source.visible { opacity: .8; }
+
+/* misty mid-ground trees — softened for aerial depth */
+.midground {
+  inset: auto -8% -8% -8%;
+  height: 84%;
+  bottom: -6%;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: cover;
+  filter: blur(2.4px);
+  opacity: .9;
+}
+
+/* drifting fog / haze */
+.fog {
+  left: -30%; right: -30%; width: 160%;
+  height: 55%;
+  filter: blur(30px);
+  mix-blend-mode: screen;
+  animation: fogdrift linear infinite alternate;
+}
+@keyframes fogdrift {
+  0%   { transform: translateX(-6%); }
+  100% { transform: translateX(6%); }
+}
+
+/* painterly paper-grain — the illuminated-manuscript texture */
+#grain {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: .05;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 260px 260px;
+  animation: grainshift .6s steps(2) infinite;
+}
+@keyframes grainshift {
+  0%   { background-position: 0 0; }
+  50%  { background-position: -80px 40px; }
+  100% { background-position: 60px -60px; }
+}
+
+/* per-scene layered background */
+#backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  transition: background 3.5s ease;
+  background: radial-gradient(ellipse at 50% 120%, #0b1030 0%, #05060f 70%);
+}
+.parallax-layer {
+  position: fixed;
+  inset: -6%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 3s ease;
+  will-change: transform;
+}
+.parallax-layer.visible { opacity: 1; }
+
+/* vignette for cinematic framing */
+#vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  box-shadow: inset 0 0 200px 20px rgba(20, 26, 48, 0.42);
+}
+
+/* cinematic colour grade — unifies every scene into one painting */
+#grade {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: soft-light;
+  opacity: .55;
+  background:
+    linear-gradient(155deg, rgba(90,110,190,.9) 0%, rgba(120,120,170,.15) 38%,
+                    rgba(160,120,90,.15) 62%, rgba(255,170,90,.85) 100%);
+}
+/* a second, gentle cool wash in the deep shadows for filmic depth */
+#grade::after {
+  content: "";
+  position: absolute; inset: 0;
+  mix-blend-mode: multiply;
+  opacity: .28;
+  background: radial-gradient(ellipse 90% 80% at 50% 40%, transparent 45%, rgba(30,34,66,.9) 100%);
+}
+
+/* dreamy bloom sheen over the whole realm */
+#bloom {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,248,224,.14), rgba(255,248,224,.05) 45%, transparent 68%);
+  animation: bloombreathe 9s ease-in-out infinite;
+}
+@keyframes bloombreathe { 0%,100%{opacity:.75} 50%{opacity:1} }
+
+/* illuminated corner ornaments — a page-of-a-fairy-tale frame */
+#ornaments { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+#ornaments .cnr {
+  position: absolute;
+  width: clamp(90px, 12vw, 170px);
+  height: clamp(90px, 12vw, 170px);
+  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 170 170'%3E%3Cg fill='none' stroke='%23e8c979' stroke-width='1.5' stroke-linecap='round'%3E%3Cpath d='M14 60 Q14 14 60 14'/%3E%3Cpath d='M14 92 Q14 40 40 26 Q58 17 74 20'/%3E%3Cpath d='M26 14 Q40 14 46 30'/%3E%3Cpath d='M14 44 Q30 40 34 26'/%3E%3Cpath d='M60 14 q10 -6 16 2 q5 7 -3 12 q-7 3 -11 -4' stroke-width='1.3'/%3E%3Cpath d='M14 60 q-6 10 2 16 q7 5 12 -3 q3 -7 -4 -11' stroke-width='1.3'/%3E%3C/g%3E%3Cpath d='M40 40 l4 7 l-4 7 l-4 -7 Z' fill='%23f2d283'/%3E%3C/svg%3E");
+  opacity: .8;
+  filter: drop-shadow(0 0 8px rgba(232,201,121,.35));
+}
+#ornaments .tl { top: 1.6vh; left: 1.4vw; }
+#ornaments .tr { top: 1.6vh; right: 1.4vw; transform: scaleX(-1); }
+#ornaments .bl { bottom: 1.6vh; left: 1.4vw; transform: scaleY(-1); }
+#ornaments .br { bottom: 1.6vh; right: 1.4vw; transform: scale(-1, -1); }
+
+/* cinematic letterbox bars for the big moments */
+#letterbox { position: fixed; inset: 0; z-index: 8; pointer-events: none; }
+#letterbox .lb {
+  position: absolute; left: 0; right: 0; height: 12vh;
+  background: linear-gradient(#05060f, #05060f);
+  transform: scaleY(0);
+  transition: transform 1.8s cubic-bezier(.4,0,.2,1);
+}
+#letterbox .lb.top { top: 0; transform-origin: top; }
+#letterbox .lb.bottom { bottom: 0; transform-origin: bottom; }
+#letterbox.on .lb { transform: scaleY(1); }
+
+/* fade-to-light overlay used between scenes and in the finale (warm bloom) */
+#flash {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: radial-gradient(ellipse at 50% 45%, #fff8ea 0%, #fdeecb 55%, #f6e2bf 100%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.6s ease;
+}
+#flash.on { opacity: 1; }
+
+/* ---- Scenes -------------------------------------------------------------- */
+#stage { position: fixed; inset: 0; z-index: 6; }
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8vh 8vw;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.05);
+  transition: opacity 2.4s ease, transform 3.2s ease;
+}
+.scene.active { opacity: 1; pointer-events: auto; transform: scale(1); }
+.scene.leaving { opacity: 0; transform: scale(1.12); }
+
+/* illuminated gold-foil titles with a slow moving sheen */
+.scene h1, .scene h2, #begin h1 {
+  background: linear-gradient(100deg,
+    #d9ad54 0%, #f2d283 22%, #fff6d0 34%, #f2d283 46%, #d9ad54 62%, #f7e6a8 82%, #d9ad54 100%);
+  background-size: 220% auto;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent; color: transparent;
+  filter: drop-shadow(0 0 26px rgba(232, 201, 121, 0.45))
+          drop-shadow(0 2px 5px rgba(30, 20, 8, 0.65));
+  animation: goldsheen 7s linear infinite;
+}
+@keyframes goldsheen { to { background-position: 220% center; } }
+
+.scene h1 {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  font-size: clamp(2rem, 6vw, 4.6rem);
+  line-height: 1.2;
+}
+.scene h2 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  font-size: clamp(1.5rem, 4vw, 3rem);
+  margin-bottom: .3em;
+}
+/* an ornamental flourish beneath each scene title */
+.scene h2::after, #begin h1::after {
+  content: "";
+  display: block;
+  width: min(340px, 66%);
+  height: 22px;
+  margin: 0.55em auto 0;
+  opacity: .85;
+  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 340 22'%3E%3Cg fill='none' stroke='%23e8c979' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M20 11 H140'/%3E%3Cpath d='M200 11 H320'/%3E%3Cpath d='M140 11 q10 -7 20 0 q10 7 20 0' stroke-width='1.6'/%3E%3Cpath d='M12 11 q-6 -5 -10 0 q4 5 10 0' /%3E%3Cpath d='M328 11 q6 -5 10 0 q-4 5 -10 0'/%3E%3C/g%3E%3Cpath d='M170 4 L174 11 L170 18 L166 11 Z' fill='%23f2d283'/%3E%3C/svg%3E");
+}
+.scene p, .scene .line {
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(1.15rem, 2.5vw, 1.7rem);
+  line-height: 1.7;
+  color: var(--ink);
+  max-width: 40ch;
+  text-shadow: 0 1px 12px rgba(0,0,0,.7);
+}
+.scene .subtitle {
+  font-style: italic;
+  color: var(--ink-dim);
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  letter-spacing: 0.04em;
+}
+
+/* staggered fade-in of lines */
+.reveal { opacity: 0; transform: translateY(14px); filter: blur(6px); }
+.reveal.in {
+  opacity: 1; transform: none; filter: blur(0);
+  transition: opacity 2.2s ease, transform 2.2s ease, filter 2.2s ease;
+}
+
+/* the guiding prompt to continue */
+.continue {
+  margin-top: 3.5rem;
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: 0.14em;
+  color: var(--gold-soft);
+  font-size: 1.15rem;
+  opacity: 0;
+  cursor: pointer;
+  pointer-events: auto;
+  padding: .6em 1.4em;
+  border-radius: 40px;
+  transition: opacity 2s ease, background .5s, transform .5s;
+  animation: breathe 4s ease-in-out infinite;
+}
+.continue.in { opacity: 0.85; }
+.continue:hover { background: rgba(245, 226, 168, 0.08); transform: scale(1.05); }
+.continue::before { content: "✦ "; opacity: .7; }
+.continue::after { content: " ✦"; opacity: .7; }
+
+@keyframes breathe {
+  0%, 100% { opacity: .55; }
+  50% { opacity: .95; }
+}
+
+/* ---- Begin screen -------------------------------------------------------- */
+#begin {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 50% 50%, rgba(14,22,44,.66) 0%, rgba(14,22,44,.34) 38%, rgba(14,22,44,0) 72%);
+  transition: opacity 2.5s ease;
+  text-align: center;
+  padding: 2rem;
+}
+#begin.gone { opacity: 0; pointer-events: none; }
+#begin .crest {
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 0 22px rgba(232,201,121,.7));
+  animation: floaty 6s ease-in-out infinite;
+}
+#begin .crest svg { width: 84px; height: 84px; display: block; overflow: visible; }
+#begin h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  font-size: clamp(1.8rem, 5vw, 3.4rem);
+  /* colour + glow come from the shared gold-foil rule above */
+}
+#begin .sub {
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink-dim);
+  margin-top: 1rem;
+  font-size: 1.25rem;
+  letter-spacing: .06em;
+}
+.enter-btn {
+  margin-top: 3rem;
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  letter-spacing: 0.2em;
+  color: #0c1130;
+  background: linear-gradient(180deg, #fff3c4, var(--gold-soft) 45%, var(--gold));
+  border: 1px solid rgba(255, 246, 208, 0.8);
+  outline: 1px solid rgba(120, 90, 30, 0.5);
+  outline-offset: 4px;
+  padding: .9em 2.4em;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 0 34px rgba(232, 201, 121, 0.55), inset 0 1px 2px rgba(255,255,255,.6);
+  transition: transform .4s, box-shadow .4s;
+  animation: breathe 4s ease-in-out infinite;
+}
+.enter-btn:hover { transform: scale(1.06); box-shadow: 0 0 50px rgba(245, 226, 168, 0.8); }
+.enter-btn .hint { display:block; font-size:.75rem; font-style:italic; letter-spacing:.08em; opacity:.7; margin-top:.3em; text-transform:none; }
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+
+/* ---- Interactive elements (trees, orbs, books, flowers, spirits) -------- */
+.field {
+  position: relative;
+  width: min(900px, 90vw);
+  height: min(420px, 46vh);
+  margin-top: 2.4rem;
+}
+.node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  pointer-events: auto;
+  filter: drop-shadow(0 0 12px rgba(232, 201, 121, 0.35));
+  transition: transform .5s ease, filter .5s ease;
+  animation: floaty 7s ease-in-out infinite, nodeglow 4.5s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes nodeglow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(232, 201, 121, 0.3)); }
+  50%      { filter: drop-shadow(0 0 20px rgba(245, 226, 168, 0.7)); }
+}
+.node svg { width: 50px; height: 50px; display: block; overflow: visible; pointer-events: none; }
+.node:hover { transform: translate(-50%, -50%) scale(1.35); filter: drop-shadow(0 0 30px rgba(255, 250, 220, 0.95)); }
+.node.found { opacity: .5; }
+
+/* glowing light-form nodes: bigger soft glow + slowly turning petals */
+.light-node { filter: drop-shadow(0 0 16px rgba(255, 250, 220, 0.55)); }
+.light-node svg { width: 62px; height: 62px; }
+.light-node .lf-spin { transform-box: fill-box; transform-origin: center; animation: lightspin 22s linear infinite; }
+@keyframes lightspin { to { transform: rotate(360deg); } }
+
+/* revealed whisper / tale / letter card */
+.card {
+  position: fixed;
+  z-index: 40;
+  left: 50%;
+  bottom: 12vh;
+  transform: translateX(-50%) translateY(20px);
+  width: min(560px, 86vw);
+  /* aged-parchment wash with a faint fibre texture */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)' opacity='0.04'/%3E%3C/svg%3E"),
+    linear-gradient(180deg, rgba(30, 25, 46, 0.82), rgba(14, 11, 26, 0.9));
+  /* gold-foil double border */
+  border: 1px solid rgba(232, 201, 121, 0.55);
+  outline: 1px solid rgba(232, 201, 121, 0.18);
+  outline-offset: 5px;
+  border-radius: 16px;
+  padding: 1.9rem 2.1rem;
+  backdrop-filter: blur(9px);
+  box-shadow: 0 10px 60px rgba(0,0,0,.55), inset 0 0 46px rgba(232,201,121,.08);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+/* ornate corner marks on the cards */
+.card::before, .card::after {
+  content: ""; position: absolute; width: 26px; height: 26px; pointer-events: none;
+  background: center/contain no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Cg fill='none' stroke='%23e8c979' stroke-width='1.4' stroke-linecap='round'%3E%3Cpath d='M4 12 Q4 4 12 4'/%3E%3Cpath d='M4 20 Q4 8 16 6'/%3E%3C/g%3E%3C/svg%3E");
+  opacity: .75;
+}
+.card::before { top: 8px; left: 8px; }
+.card::after { top: 8px; right: 8px; transform: scaleX(-1); }
+.card.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+.card h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  letter-spacing: .1em;
+  color: var(--gold-soft);
+  font-size: 1.4rem;
+  margin-bottom: .6rem;
+}
+.card p {
+  font-family: var(--serif);
+  font-size: 1.25rem;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+/* progress: how many secrets found in a scene */
+.found-count {
+  position: fixed;
+  top: 3vh; left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  font-family: var(--serif);
+  font-style: italic;
+  letter-spacing: .12em;
+  color: var(--gold-soft);
+  opacity: 0;
+  font-size: 1rem;
+  transition: opacity 1s;
+  text-shadow: 0 0 12px rgba(0,0,0,.8);
+}
+.found-count.in { opacity: .7; }
+
+/* flowers for the meadow (CSS bloom) */
+.flower {
+  position: absolute;
+  transform: translate(-50%, -50%) scale(0.06) rotate(-25deg);
+  transition: transform 1.4s cubic-bezier(.2,1.4,.4,1), opacity 1.4s;
+  opacity: 0.12;
+  pointer-events: auto;
+  cursor: pointer;
+  filter: drop-shadow(0 0 10px rgba(242, 184, 212, .5));
+}
+.flower svg { width: 100%; height: 100%; display: block; overflow: visible; pointer-events: none; }
+.flower.bloom { transform: translate(-50%, -50%) scale(1) rotate(0deg); opacity: 1; }
+
+/* the ambient audio hint / mute control */
+#audio-toggle {
+  position: fixed;
+  bottom: 2.4vh; right: 2.4vw;
+  z-index: 45;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: .1em;
+  color: var(--ink-dim);
+  background: rgba(12,10,24,.4);
+  border: 1px solid rgba(232,201,121,.25);
+  border-radius: 30px;
+  padding: .4em 1em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1s, color .4s;
+}
+#audio-toggle.in { opacity: .55; }
+#audio-toggle:hover { opacity: 1; color: var(--gold-soft); }
+
+/* skip whisper — a discreet way to move faster */
+#skip {
+  position: fixed;
+  bottom: 2.4vh; left: 2.4vw;
+  z-index: 45;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: .95rem;
+  color: var(--ink-dim);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity 1s, color .4s;
+}
+#skip.in { opacity: .35; }
+#skip:hover { opacity: .8; color: var(--gold-soft); }
+
+/* ---- Finale / coronation ------------------------------------------------- */
+#crown-anchor {
+  position: fixed;
+  left: 50%; top: 38%;
+  transform: translate(-50%, -50%);
+  z-index: 6;
+  pointer-events: none;
+}
+.coronation-text {
+  font-family: var(--display);
+  font-weight: 500;
+  letter-spacing: .3em;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #fff;
+  text-shadow: 0 0 50px rgba(245, 226, 168, 0.9);
+}
+
+/* finale video */
+#finale-video {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+}
+#finale-video.show { display: flex; opacity: 1; }
+#finale-video video {
+  max-width: 92vw;
+  max-height: 88vh;
+  border-radius: 12px;
+  box-shadow: 0 0 80px rgba(232, 201, 121, 0.35);
+}
+
+/* closing message (no video) */
+#closing {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+#closing.show { display: flex; }
+#closing p {
+  font-family: var(--serif);
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  line-height: 1.9;
+  color: var(--ink);
+  max-width: 30ch;
+  text-shadow: 0 0 20px rgba(0,0,0,.7);
+}
+
+/* accessibility: honor reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: .001ms !important; animation-iteration-count: 1 !important; }
+}
+
+/* ---- Phones & touch ----------------------------------------------------- */
+@media (max-width: 720px) {
+  .scene { padding: 6vh 6vw; }
+  .scene p, .scene .line { max-width: 88vw; }
+  .card { width: 92vw; bottom: 9vh; padding: 1.3rem 1.4rem; }
+  .card p { font-size: 1.1rem; }
+  .field { width: 92vw; height: 44vh; margin-top: 1.6rem; }
+  .continue { margin-top: 2.4rem; font-size: 1.05rem; padding: .7em 1.5em; }
+  .found-count { font-size: .9rem; }
+  #audio-toggle, #skip { font-size: .85rem; }
+  #begin .crest svg { width: 68px; height: 68px; }
+}
+/* touch devices: bigger, easier-to-tap glowing secrets */
+@media (hover: none), (pointer: coarse) {
+  .light-node svg { width: 76px; height: 76px; }
+  .node svg { width: 62px; height: 62px; }
+  .flower { min-width: 44px; min-height: 44px; }
+}
