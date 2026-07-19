@@ -573,6 +573,13 @@ html, body {
   text-shadow: 0 0 12px rgba(0,0,0,.8);
 }
 .found-count.in { opacity: .7; }
+/* the "touch the fairies" instruction — brighter & gently pulsing */
+.found-count.hint {
+  color: var(--gold-soft);
+  font-size: 1.12rem;
+  text-shadow: 0 0 16px rgba(232, 201, 121, .6), 0 0 12px rgba(0,0,0,.8);
+}
+.found-count.hint.in { opacity: .95; animation: breathe 3.4s ease-in-out infinite; }
 
 /* flowers for the meadow (CSS bloom) */
 .flower {

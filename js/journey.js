@@ -184,10 +184,17 @@ const Journey = (() => {
         // when she visits another fairy, and fades away when the scene ends.
       }
       function updateCounter() {
-        counter.textContent =
-          found >= required
-            ? T(opts.doneLabel || "the realm remembers you")
-            : `${found} / ${required} ${opts.unit || "found"}`;
+        if (found === 0) {
+          // before she's found any, tell her clearly what to do
+          counter.classList.add("hint");
+          counter.textContent = "✦ " + T(opts.hint || "touch each little fairy to hear the words it holds") + " ✦";
+        } else {
+          counter.classList.remove("hint");
+          counter.textContent =
+            found >= required
+              ? T(opts.doneLabel || "the realm remembers you")
+              : `${found} / ${required} ${opts.unit || "found"}`;
+        }
       }
       function cleanup() {
         counter.classList.remove("in");
@@ -222,6 +229,7 @@ const Journey = (() => {
     await discoveryField(s, items, {
       tint: "#eaffc0",
       unit: "whispers heard",
+      hint: "touch each little fairy to hear its whisper",
       doneLabel: "the trees have told you everything they kept",
       required: Math.min(4, items.length),
       holdAfter: 3200,
@@ -236,10 +244,12 @@ const Journey = (() => {
     s.appendChild(el("h2", null, "The River of Memories"));
     await narrate(s, [QUEEN.river.intro], { gap: 2800 });
     await wait(400);
-    await discoveryField(s, QUEEN.river.memories, {
+    const memItems = QUEEN.river.memories.map((m) => ({ title: m.title, text: m.tale }));
+    await discoveryField(s, memItems, {
       tint: "#c4ecff",
       unit: "memories retold",
       doneLabel: "the river has given back all it held",
+      hint: "touch each drifting fairy to hear the memory it carries",
       holdAfter: 3400,
     });
     await continuePrompt(s, "the current carries you onward");
@@ -256,6 +266,7 @@ const Journey = (() => {
     await discoveryField(s, items, {
       tint: "#ffe6b0",
       unit: "pages opened",
+      hint: "touch each fairy to read the letter it carries",
       doneLabel: "every unwritten thing has been read",
       holdAfter: 3800,
     });
@@ -332,6 +343,7 @@ const Journey = (() => {
     await discoveryField(s, items, {
       tint: "#e0d0ff",
       unit: "spirits greeted",
+      hint: "touch each fairy to greet the spirit it holds",
       doneLabel: "the spirits bow — they know you now",
       holdAfter: 3600,
     });
