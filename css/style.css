@@ -542,6 +542,24 @@ html, body {
 .card::before { top: 8px; left: 8px; }
 .card::after { top: 8px; right: 8px; transform: scaleX(-1); }
 .card.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+/* close button — the card itself stays click-through, only this is tappable */
+.card-close {
+  position: absolute;
+  top: 10px; right: 12px;
+  width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(232, 201, 121, 0.4);
+  background: rgba(232, 201, 121, 0.08);
+  color: var(--gold-soft);
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background .3s, transform .3s, border-color .3s;
+}
+.card-close:hover { background: rgba(232, 201, 121, 0.2); border-color: var(--gold-soft); transform: scale(1.1); }
 .card h3 {
   font-family: var(--display);
   font-weight: 400;
@@ -549,6 +567,7 @@ html, body {
   color: var(--gold-soft);
   font-size: 1.4rem;
   margin-bottom: .6rem;
+  padding-right: 2.2rem; /* keep the title clear of the ✕ button */
 }
 .card p {
   font-family: var(--serif);
@@ -777,4 +796,5 @@ html, body {
   .light-node svg { width: 76px; height: 76px; }
   .node svg { width: 62px; height: 62px; }
   .flower { min-width: 44px; min-height: 44px; }
+  .card-close { width: 42px; height: 42px; font-size: 1.2rem; top: 8px; right: 8px; }
 }

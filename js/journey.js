@@ -135,8 +135,9 @@ const Journey = (() => {
       requestAnimationFrame(() => counter.classList.add("in"));
 
       const card = el("div", "card");
-      card.innerHTML = `<h3></h3><p></p>`;
+      card.innerHTML = `<button class="card-close" aria-label="close" title="close">✕</button><h3></h3><p></p>`;
       document.body.appendChild(card);
+      card.querySelector(".card-close").addEventListener("click", () => card.classList.remove("show"));
 
       const required = opts.required ?? items.length;
       let found = 0;
