@@ -212,7 +212,7 @@ const Journey = (() => {
   // 0 — Awakening / title
   async function sceneAwaken() {
     const s = newScene("night", "default");
-    s.appendChild(el("h1", null, "The Forgotten Queen"));
+    s.appendChild(el("h1", null, QUEEN.experienceTitle || "The Awaited Queen"));
     await wait(1400);
     await narrate(s, QUEEN.opening, { gap: 2600 });
     await wait(800);

@@ -16,6 +16,7 @@ const QUEEN = {
   // ---- Her ----------------------------------------------------------------
   name: "Rihab",                // Her name (or the name only you two use)
   title: "the Fairy Queen",     // How the realm remembers her
+  experienceTitle: "The Awaited Queen", // The big title on the cover & opening
 
   // ---- Optional real media (leave "" to use the built-in ambient magic) ---
   music: "assets/music/once-upon-a-dream.mp3",  // sung version — drop the file here (falls back to the built-in waltz if missing)

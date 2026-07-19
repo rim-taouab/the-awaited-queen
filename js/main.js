@@ -55,6 +55,12 @@
   if (beginName) beginName.textContent = QUEEN.name;
   const crest = document.getElementById("crest");
   if (crest && window.Icons) crest.innerHTML = Icons.get("crown");
+  // the experience title comes from the config
+  if (QUEEN.experienceTitle) {
+    document.title = QUEEN.experienceTitle;
+    const bt = document.getElementById("begin-title");
+    if (bt) bt.textContent = QUEEN.experienceTitle;
+  }
 
   // A living, bright enchanted forest behind the title screen (no sound yet —
   // audio still waits for the first click, but the visuals can breathe early).
